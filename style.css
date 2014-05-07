@@ -1,0 +1,250 @@
+body {
+    margin: 0;
+    background-color: black;
+}
+
+#map{
+    /*background: transparent url(images/secret_room.jpg) repeat-x scroll 0 0;*/
+    background: transparent url(images/library_first.png) repeat-x scroll 0 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 600px;
+    position: relative;
+}
+
+#canvasDiv {
+    overflow: hidden;
+}
+
+#canvas {
+    position: absolute;
+    top: 305px;
+    left: 0px;
+}
+
+#books{
+    padding-top: 175px;
+    float: right;
+    padding-right: 30px;
+}
+.clickable {
+    cursor: pointer;
+    -webkit-user-select: none;
+}
+
+.fence {
+    visibility: hidden;
+    position: absolute;
+    top: 321px;
+    left: 492px;
+    width: 188px;
+}
+
+.inventory {
+    position: absolute;
+    top: 587px;
+    -webkit-user-select: none;
+}
+
+audio{
+    position: absolute;
+    width: 40px;
+
+}
+
+#thumbs img {
+    cursor:pointer;
+}
+
+#rope{
+    visibility: hidden;
+    position: absolute;
+    top: 200px;
+    left: 300px;
+}
+
+#hand_net{
+    visibility: hidden;
+    position: absolute;
+    top: 270px;
+    left: 420px;
+}
+
+#inventory-rope{
+    visibility: hidden;
+    position: absolute;
+    top: 600px;
+    left: 250px;
+}
+
+#inventory_hand_net{
+    visibility: hidden;
+    position: absolute;
+    left: 282px;
+    top: 600px;
+}
+
+#lawnmower{
+    visibility: hidden;
+    position: absolute;
+    top: 342px;
+    left: 539px;
+}
+
+#fly{
+    visibility: hidden;
+    position: absolute;
+    top: 420px;
+    left: 800px;
+}
+
+#butterfly{
+    visibility: hidden;
+    position: absolute;
+    top: 420px;
+    left: 800px;
+}
+
+#jar{
+    position: absolute;
+    left: 722px;
+    top: 587px;
+}
+
+#score{
+    visibility: hidden;
+    position: absolute;
+    left: 730px;
+    top: 620px;
+}
+
+#zero_score{
+    position: absolute;
+    left: 730px;
+    top: 620px;
+}
+
+#rope_flash{
+    visibility: hidden;
+    position: absolute;
+    top: 340px;
+    left: 364px;
+}
+
+.grass{
+    visibility: hidden;
+    position: absolute;
+    top: 460px;
+    left: 455px;
+}
+
+#speech_bubble{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+#speech_bubble2{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+#speech_bubble3{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+#speech_bubble4{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+#speech_bubble5{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+}
+
+#speech_start{
+    visibility: visible;
+    position: absolute;
+    top: 0px;
+}
+
+#score5{
+    visibility: hidden;
+    position: absolute;
+    left: 730px;
+    top: 620px;
+}
+
+#score15{
+    visibility: hidden;
+    position: absolute;
+    left: 730px;
+    top: 620px;
+}
+
+#home{
+    visibility: hidden;
+    position: absolute;
+    left: 271px;
+    top: 295px;
+}
+
+#flowerpot{
+    visibility: hidden;
+    position: absolute;
+    left: 671px;
+    top: 290px;
+}
+
+#adventure, #fantasy, #horror, #humor
+{
+    visibility: hidden;
+}
+
+#animal{
+    position: absolute;
+    left: 645px;
+    visibility: hidden;
+    top: 256px;
+}
+
+#dark{
+    visibility: visible;
+    position: absolute;
+    left: 483px;
+    top: 125px;
+}
+
+#cat{
+    position: absolute;
+    top: 300px;
+    left: 200px;
+}
+
+#tail{
+    position: absolute;
+    top: 456px;
+    left: 335px;
+    visibility: visible;
+}
+
+#tail2 {
+    position: absolute;
+    top: 448px;
+    left: 335px;
+    visibility: hidden;
+}
+
+#tail3 {
+    position: absolute;
+    top: 436px;
+    left: 335px;
+    visibility: hidden;
+}

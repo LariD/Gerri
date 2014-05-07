@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+  <head>
+    <title>Gerri</title>
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+      <link href="style.css" rel="stylesheet" type="text/css">
+
+      <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+      <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="js/phaser.min.js"></script>
+      <!-- bjqs.css contains the *essential* css needed for the slider to work -->
+      <link rel="stylesheet" href="bjqs.css">
+
+      <!-- some pretty fonts for this demo page - not required for the slider -->
+      <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans:300' rel='stylesheet' type='text/css'>
+
+      <!-- demo.css contains additional styles used to set up this demo page - not required for the slider -->
+      <link rel="stylesheet" href="demo.css">
+
+      <!-- load jQuery and the plugin -->
+      <script src="js/bjqs-1.3.min.js"></script>
+
+
+
+  </head>
+  <body>
+
+
+      <div id="map-container">
+          <div id="map">
+                 <!-- <audio id="audio" controls="controls" class="clickable"  autoplay="false">
+                      <source id="mp3Source" src="music/intro.mp3" type="audio/mpeg">
+                      <source id="oggSource" src="music/intro.ogg" type="audio/ogg">
+                      <embed height="50" width="100" src="music/intro.mp3">
+                  </audio>-->
+              <div id="canvasDiv" class="clickable">
+                  <div id = "dark">
+                      <img src="assets/clickable_dark_place.jpg" title=""/>
+                  </div>
+                  <div id = "books">
+                      <div id="adventure" class="clickable">
+                          <img src="assets/book_adv.png" title=""/>
+                      </div>
+                      <div id="animal">
+                          <!--Change this to book_animal later on
+                          <img src="assets/book_animal.png" title=""/>-->
+                          <img src="assets/book_adv.png" title=""/>
+                      </div>
+                      <div id="fantasy" class="clickable">
+                          <img src="assets/book_fantasy.png" title=""/>
+                      </div>
+                      <div id="horror" class="clickable">
+                          <img src="assets/book_horror.gif" title=""/>
+                      </div>
+                      <div id="humor" class="clickable">
+                          <img src="assets/book_humor.gif" title=""/>
+                      </div>
+                  </div>
+                  <div id="speech_bubble" class="clickable">
+                      <img src="assets/speech1.png" title=""/>
+                  </div>
+
+                  <!--<img class="fence" src="assets/fence2.png" title=""/>-->
+
+                  <img class="grass" src="assets/grass.png" title=""/>
+
+                 <div id="rope" class="clickable">
+                     <img src="assets/rope.png" title=""/>
+                 </div>
+                 <div id="hand_net" class="clickable">
+                     <img src="assets/hand_net.png" title=""/>
+                 </div>
+
+                  <div id="flowerpot" class="clickable">
+                      <img src="assets/flower.png" title=""/>
+                  </div>
+
+                  <div id="butterfly" class="clickable">
+                      <img src="assets/butterfly.png" title=""/>
+                  </div>
+
+                  <div id="cat">
+                      <img src="assets/cat_noTail.png" title=""/>
+                  </div>
+
+                  <div id="tail">
+                      <img src="assets/tail1.png" title=""/>
+                  </div>
+
+                  <div id="tail2">
+                      <img src="assets/tail2.png" title=""/>
+                  </div>
+
+                  <div id="tail3">
+                      <img src="assets/tail3.png" title=""/>
+                  </div>
+
+
+
+              </div>
+              <img class="inventory" src="assets/inventory_long.png" title=""/>
+
+
+              <div id="items">
+
+
+                  <div id="inventory-rope" class="clickable">
+                      <img src="assets/inventory-rope.png" title=""/>
+                  </div>
+
+
+                  <div id="inventory_hand_net" class="clickable">
+                      <img src="assets/inventory_hand_net.png" title=""/>
+                  </div>
+
+                  <div id="lawnmower" class="clickable">
+                      <img src="assets/lawnmower.png" title=""/>
+                  </div>
+
+
+
+                  <div id="fly" class="clickable">
+                      <img src="assets/fly.png" title=""/>
+                  </div>
+
+                  <div id="jar" class="clickable">
+                      <img src="assets/jar.png" title=""/>
+                  </div>
+
+                  <div id="score">
+                      <img src="assets/score.png" title=""/>
+                  </div>
+                  <div id="score5">
+                      <img src="assets/score5.png" title=""/>
+                  </div>
+
+
+                  <div id="zero_score">
+                      <img src="assets/zero.png" title=""/>
+                  </div>
+
+                  <div id="score15">
+                      <img src="assets/score15.png" title=""/>
+                  </div>
+
+                  <div id="speech_start" class="clickable">
+                      <img src="assets/speech_start.png" title=""/>
+                  </div>
+
+                  <div id="speech_bubble2" class="clickable">
+                      <img src="assets/speech2.png" title=""/>
+                  </div>
+
+                  <div id="speech_bubble3" class="clickable">
+                      <img src="assets/speech3.png" title=""/>
+                  </div>
+
+                  <div id="speech_bubble4" class="clickable">
+                      <img src="assets/speech4.png" title=""/>
+                  </div>
+
+                  <div id="home">
+                      <img src="assets/home.png" title=""/>
+                  </div>
+
+
+              </div>
+
+
+          </div>
+      </div>
+
+
+  <script type="text/javascript" src="html5-canvas-game-character-2.js"></script>
+  <script type="text/javascript">
+            prepareCanvas(document.getElementById("canvasDiv"), 140, 185);
+   </script>
+  </body>
+</html>
