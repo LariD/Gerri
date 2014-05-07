@@ -515,8 +515,7 @@ $('#lawnmower').on('click', function (){
         $('#speech_bubble2').css('visibility', 'hidden');
         animatethis($('#lawnmower')),
             setTimeout(function () {
-                $('#fly').css('visibility', 'visible');
-                /*animateFly($('#fly'));*/
+                flyStart();
                 $('embed').remove();
                 $('body').append('<embed src="music/GerriFly.wav" autostart="false" hidden="true" loop="true">');
                 $('#zero_score').css('visibility', 'hidden');
@@ -541,7 +540,7 @@ $('#flowerpot').on('click', function (){
         $('#speech_bubble2').css('visibility', 'hidden');
         animatePot($('#flowerpot')),
             setTimeout(function () {
-                $('#butterfly').css('visibility', 'visible');
+                flyStart();
                 animateButterfly($('#butterfly'));
                 $('embed').remove();
                 $('body').append('<embed src="music/butterfly.wav" autostart="true" hidden="true" loop="true">');
@@ -591,62 +590,38 @@ $('#rope, #hand_net').on('click', function() {
             }
         });
 };*/
-
-
-
-
+/***************************************************************
+ * Fly related things
+ **************************************************************/
+var flyAnimate = false;
+function flyStart() {
+    // Move fly to the starting point
+    $("#fly").css('left', '750px');
+    $("#fly").css('top', '420px');
+    // Make the fly visible
+    $('#fly').css('visibility', 'visible');
+    // Allow fly animation
+    flyAnimate = true;
+    // Show the first animation where fly flies from the starting point (the lawnmower) to
+    // the normal flying position (closer to the top of the screen)
+    // and then call the next animation step - flyLeft.
+    $("#fly").animate({left: "-=200", top: "-=320"}, 1000, "swing", flyLeft);
+}
 function flyLeft() {
-    $("#fly").animate({left: "-=500"}, 2000, "swing", flyRight);
-    $("#fly").css('left', '600px');
-    $("#fly").css('top', '100px');
-
+    if (flyAnimate) {
+        $("#fly").animate({left: "-=500"}, 2000, "swing", flyRight);
+    }
 }
 function flyRight() {
-    $("#fly").animate({left: "+=500"}, 2000, "swing", flyLeft);
+    if (flyAnimate) {
+        $("#fly").animate({left: "+=500"}, 2000, "swing", flyLeft);
+    }
 }
-
-flyRight();
-
-/*var t = 0;
-
-function animateFly() {
-    t += 0.02;
-
-    var r = 300;
-    var xcenter = 400;
-    var ycenter = 200;
-    var newLeft = Math.floor(xcenter + (r * Math.cos(t)));
-    var newTop = Math.floor(ycenter + (r * Math.sin(t)));
-    $('#fly').animate({
-        top: newTop,
-        left: newLeft
-    }, 1, function() {
-        animateFly();
-    });
-}
-*/
-
-var time = 0;
-
-function animateButterfly() {
-    time += 0.01;
-
-    var r = 300;
-    var xcenter = 400;
-    var ycenter = 200;
-    var newLeft = Math.floor(xcenter + (r * Math.cos(time)));
-    var newTop = Math.floor(ycenter + (r * Math.sin(time)));
-    $('#butterfly').animate({
-        top: newTop,
-        left: newLeft
-    }, 1, function() {
-        animateButterfly();
-    });
-}
-
-
 $('#fly').on('click', function(){
     $('#fly').css('visibility', 'hidden');
+    flyAnimate = false;
+
+    // TODO: what is this code below and does it belong here?
     $('#speech_bubble3').css('visibility', 'hidden');
     $('embed').remove();
     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
@@ -670,6 +645,26 @@ $('#fly').on('click', function(){
     }, 5000);
 
 });
+
+/***************************************************************
+ * Butterfly related things
+ **************************************************************/
+var time = 0;
+function animateButterfly() {
+    time += 0.01;
+
+    var r = 300;
+    var xcenter = 400;
+    var ycenter = 200;
+    var newLeft = Math.floor(xcenter + (r * Math.cos(time)));
+    var newTop = Math.floor(ycenter + (r * Math.sin(time)));
+    $('#butterfly').animate({
+        top: newTop,
+        left: newLeft
+    }, 1, function() {
+        animateButterfly();
+    });
+}
 
 $('#butterfly').on('click', function(){
     $('#butterfly').css('visibility', 'hidden');
@@ -722,5 +717,3 @@ function updateHumorSource(){
     audio.autoplay=true;
     audio.load();
 }
-
-$('#canvas').collision('#home')
