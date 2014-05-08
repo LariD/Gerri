@@ -170,7 +170,7 @@ audio{
 }
 
 #speech_start{
-    visibility: visible;
+    visibility: hidden;
     position: absolute;
     top: 0px;
 }
