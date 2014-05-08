@@ -629,8 +629,12 @@ $('#butterfly').on('click', function(){
         $('#canvas').css('left','0px');
         $('#cat').css('visibility', 'visible');
         $('#tail').css('visibility', 'visible');
+        $('#bush').css('visibility', 'visible');
         flapTail();
     }, 2000);
+    setTimeout(function(){
+        $('#catSpeech1').css('visibility', 'visible');
+    }, 6000);
 
 });
 
