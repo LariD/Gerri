@@ -41,29 +41,24 @@ var currentMap = 'library_first';
 
 
 function updateFPS() {
-	
 	curFPS = numFramesDrawn;
 	numFramesDrawn = 0;
 }
-function prepareCanvas(canvasDiv, canvasWidth, canvasHeight)
-{
+function prepareCanvas(canvasDiv, canvasWidth, canvasHeight) {
 	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth);
 	canvas.setAttribute('height', canvasHeight);
 	canvas.setAttribute('id', 'canvas');
 	canvasDiv.appendChild(canvas);
-	
 	if(typeof G_vmlCanvasManager != 'undefined') {
 		canvas = G_vmlCanvasManager.initElement(canvas);
 	}
 	context = canvas.getContext("2d"); // Grab the 2d canvas context
 	// Note: The above code is a workaround for IE 8and lower. Otherwise we could have used:
 	//     context = document.getElementById('canvas').getContext("2d");
-	
 	canvas.width = canvas.width; // clears the canvas 
 	context.fillText("loading...", 40, 140);
-
 	loadImage("leftArm");
 	loadImage("legs");
 	loadImage("torso");
@@ -76,7 +71,6 @@ function prepareCanvas(canvasDiv, canvasWidth, canvasHeight)
 }
 
 function loadImage(name) {
-
   images[name] = new Image();
   images[name].onload = function() { 
 	  resourceLoaded();
@@ -85,82 +79,64 @@ function loadImage(name) {
 }
 
 function resourceLoaded() {
-
   numResourcesLoaded += 1;
   if(numResourcesLoaded === totalResources) {
-  
 	setInterval(redraw, 1000 / fps);
   }
 }
 
 function redraw() {
-
   var x = charX;
   var y = charY;
-
-  
-  canvas.width = canvas.width; // clears the canvas 
-
+  canvas.width = canvas.width; // clears the canvas
   // Draw shadow
   if (jumping) {
 	drawEllipse(x + 40, y + 29, 100 - breathAmt, 4);
   } else {
 	drawEllipse(x + 40, y + 29, 160 - breathAmt, 6);
   }
-  
   if (jumping) {
 	//y -= jumpHeight;
   }
-
   if (jumping) {
 	context.drawImage(images["leftArm-jump"], x + 40, y - 42 - breathAmt);
   } else {
 	context.drawImage(images["leftArm"], x + 40, y - 42 - breathAmt);
   }
-  
   if (jumping) {
 	context.drawImage(images["legs-jump"], x, y- 6);
   } else {
 	context.drawImage(images["legs"], x, y);
   }
-	
   context.drawImage(images["torso"], x, y - 50);
   context.drawImage(images["head"], x - 10, y - 125 - breathAmt);
   context.drawImage(images["hair"], x - 37, y - 138 - breathAmt);
-  
   if (jumping) {
 	context.drawImage(images["rightArm-jump"], x - 35, y - 42 - breathAmt);
   } else {
 	context.drawImage(images["rightArm"], x - 15, y - 42 - breathAmt);
   }
-	
   drawEllipse(x + 47, y - 68 - breathAmt, 8, curEyeHeight); // Left Eye
   drawEllipse(x + 58, y - 68 - breathAmt, 8, curEyeHeight); // Right Eye
 }
 
 function drawEllipse(centerX, centerY, width, height) {
-
   context.beginPath();
-  
   context.moveTo(centerX, centerY - height/2);
-  
   context.bezierCurveTo(
 	centerX + width/2, centerY - height/2,
 	centerX + width/2, centerY + height/2,
 	centerX, centerY + height/2);
-
   context.bezierCurveTo(
 	centerX - width/2, centerY + height/2,
 	centerX - width/2, centerY - height/2,
 	centerX, centerY - height/2);
- 
   context.fillStyle = "black";
   context.fill();
   context.closePath();	
 }
 
-function updateBreath() { 
-				
+function updateBreath() {
   if (breathDir === 1) {  // breath in
 	breathAmt -= breathInc;
 	if (breathAmt < -breathMax) {
@@ -174,28 +150,24 @@ function updateBreath() {
   }
 }
 
-function updateBlink() { 
-				
-  eyeOpenTime += blinkUpdateTime;
-	
-  if(eyeOpenTime >= timeBtwBlinks){
-	blink();
-  }
+function updateBlink() {
+    eyeOpenTime += blinkUpdateTime;
+    if(eyeOpenTime >= timeBtwBlinks){
+        eyeBlink();
+    }
 }
 
-function blink() {
-
-  curEyeHeight -= 1;
-  if (curEyeHeight <= 0) {
-	eyeOpenTime = 0;
-	curEyeHeight = maxEyeHeight;
-  } else {
-	setTimeout(blink, 10);
-  }
+function eyeBlink() {
+    curEyeHeight -= 1;
+    if (curEyeHeight <= 0) {
+	    eyeOpenTime = 0;
+	    curEyeHeight = maxEyeHeight;
+    } else {
+	    setTimeout(eyeBlink, 10);
+    }
 }
 
 function jump() {
-	
   if (!jumping) {
 	jumping = true;
       var oldTop = parseInt($("#canvas").css("top"));
@@ -205,7 +177,6 @@ function jump() {
 
 }
 function land() {
-	
   jumping = false;
     var oldTop = parseInt($("#canvas").css("top"));
     $("#canvas").css("top", oldTop + jumpHeight);
@@ -297,18 +268,8 @@ function getBook(){
                 setTimeout(function () {
                     $('embed').remove();
                     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-                    changeMap('piha');
-                    $('.fence').css('visibility', 'visible');
-                    $('#canvas').css('left', '70px');
-                    $('#rope').css('visibility', 'visible');
-                    $('.grass').css('visibility', 'visible');
-                    $('#speech_bubble').css('visibility', 'visible');
-                    $('#speech_start').css('visibility', 'hidden');
-                    blink();
-                    $('#hand_net').css('visibility', 'visible');
-                    $('#lawnmower').css('visibility', 'visible');
-                    hide_all_books();
-                    updateAnimalSource();
+                    showMap('piha');
+                    hideMap('secret_room');
                 }, 1500);
             }
         }
@@ -336,9 +297,7 @@ function getRope(){
 
 function getNet(){
     var canvas_left = parseInt($('#canvas').css('left'));
-    if (currentMap === 'piha')
-
-    {
+    if (currentMap === 'piha') {
         if (canvas_left > 300 && canvas_left < 450){
             if(jumping == true)
             {
@@ -352,9 +311,89 @@ function getNet(){
     }
 }
 
-function changeMap(mapName) {
+function showMap(mapName) {
     currentMap = mapName;
     $('#map').css('background-image', 'url(assets/' + mapName + '.png)');
+    switch (mapName) {
+        case 'library_first':
+            $('#dark').css('visibility', 'visible');
+            break;
+        case 'secret_room':
+            $('#animal').css('visibility', 'visible');
+            $('#speech_start').css('visibility', 'visible');
+            break;
+        case 'piha':
+            $('.fence').css('visibility', 'visible');
+            $('#rope').css('visibility', 'visible');
+            $('.grass').css('visibility', 'visible');
+            $('#speech_bubble').css('visibility', 'visible');
+            $('#hand_net').css('visibility', 'visible');
+            $('#lawnmower').css('visibility', 'visible');
+            updateAnimalSource();
+            // Position player
+            $('#canvas').css('left', '70px');
+            break;
+        case 'forest':
+            $('#home').css('visibility', 'visible');
+            $('#rock').css('visibility', 'visible');
+            $('#flowerpot').css('visibility', 'visible');
+            $('#speech_bubble4').css('visibility', 'visible');
+            // Position player
+            $('#canvas').css('left','0px');
+            break;
+        case 'cave':
+            $('#cat').css('visibility', 'visible');
+            $('#tail').css('visibility', 'visible');
+            // Position player
+            $('#canvas').css('left','0px');
+            showCatTail();
+            break;
+    }
+}
+
+function hideMap(mapName) {
+    switch (mapName) {
+        case 'library_first':
+            $('#dark').css('visibility', 'hidden');
+            break;
+        case 'secret_room':
+            $('#speech_start').css('visibility', 'hidden');
+            $("#animal").css('visibility', 'hidden');
+            break;
+        case 'piha':
+            $('.fence').css('visibility', 'hidden');
+            $('#rope').css('visibility', 'hidden');
+            $('.grass').css('visibility', 'hidden');
+            $('#speech_bubble').css('visibility', 'hidden');
+            $('#speech_bubble2').css('visibility', 'hidden');
+            $('#hand_net').css('visibility', 'hidden');
+            $('#lawnmower').css('visibility', 'hidden');
+            $('#fly').css('visibility', 'hidden');
+            flyAnimate = false;
+            $('#speech_bubble3').css('visibility', 'hidden');
+            break;
+        case 'forest':
+            $('#home').css('visibility', 'hidden');
+            $('#rock').css('visibility', 'hidden');
+            $('#butterfly').css('visibility', 'hidden');
+            $('#flowerpot').css('visibility', 'hidden');
+            $('#speech_bubble4').css('visibility', 'hidden');
+            $('#speech_bubble5').css('visibility', 'hidden');
+            break;
+        case 'cave':
+            $('#cat').css('visibility', 'hidden');
+            hideCatTail();
+            break;
+    }
+}
+
+function debug_changeMap(mapName) {
+    hideMap('library_first');
+    hideMap('secret_room');
+    hideMap('piha');
+    hideMap('forest');
+    hideMap('cave');
+    showMap(mapName);
 }
 
 function jumpOverObstacle(){
@@ -370,32 +409,27 @@ function jumpOverObstacle(){
     }*/
 }
 
-function hide_all_books() {
-    $("#animal").hide();
-}
-
 //click on the dark wall to enter secret room
 $('#dark').on('click', function()
 {
-    changeMap('secret_room');
-    $('#animal').css('visibility', 'visible');
-    $('#dark').css('visibility', 'hidden');
+    showMap('secret_room');
+    hideMap('library_first');
 })
 
-setInterval(function(){blink()}, 1000);
+setInterval(blink, 2000);
 function blink() {
-    $("#rope").fadeTo(1000, 0.5).fadeTo(200, 2.0);
-    $("#hand_net").fadeTo(1000, 0.5).fadeTo(200, 2.0);
-    $("#dark").fadeTo(1000, 0.5).fadeTo(200, 2.0);
+    $("#rope").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
+    $("#hand_net").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
+    $("#dark").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
 }
 
 
 
 $('#rope').on('click', function(){
-     $('#rope').css('visibility', 'hidden');
+    $('#rope').css('visibility', 'hidden');
     $('embed').remove();
     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-     $('#inventory-rope').css('visibility', 'visible');
+    $('#inventory-rope').css('visibility', 'visible');
 
  });
 
@@ -569,18 +603,8 @@ $('#fly').on('click', function(){
         $('#score5').css('visibility', 'hidden');
     }, 500);
     setTimeout(function(){
-        changeMap('forest');
-        $('#zero_score').css('visibility', 'hidden');
-        $('#score5').css('visibility', 'hidden');
-        $('#canvas').css('left','0px');
-        $('.fence').css('visibility', 'hidden');
-        $('#lawnmower').css('visibility', 'hidden');
-        $('#home').css('visibility', 'visible');
-        $('#rock').css('visibility', 'visible');
-        $('#flowerpot').css('visibility', 'visible');
-
-        $('#speech_bubble4').css('visibility', 'visible');
-
+        showMap('forest');
+        hideMap('piha');
     }, 2000);
 
 });
@@ -622,29 +646,40 @@ $('#butterfly').on('click', function(){
 
     }, 500);
     setTimeout(function(){
-        changeMap('cave');
-        $('#flowerpot').css('visibility', 'hidden');
-        $('#rock').css('visibility', 'hidden');
-        $('#home').css('visibility', 'hidden');
-        $('#canvas').css('left','0px');
-        $('#cat').css('visibility', 'visible');
-        $('#tail').css('visibility', 'visible');
-        flapTail();
+        showMap('cave');
+        hideMap('forest');
     }, 2000);
 
 });
 
+
+var catTailVisible = false;
+function hideCatTail() {
+    catTailVisible = false;
+    $('#tail').css('visibility', 'hidden');
+    $('#tail2').css('visibility', 'hidden');
+    $('#tail3').css('visibility', 'hidden');
+}
+function showCatTail() {
+    catTailVisible = true;
+    flapTail();
+}
 function flapTail() {
+    if (catTailVisible === false) {return;}
     setTimeout(function () {
+        if (catTailVisible === false) {return;}
         $('#tail2').css('visibility', 'visible');
         $('#tail').css('visibility', 'hidden');
         setTimeout(function () {
+            if (catTailVisible === false) {return;}
             $('#tail3').css('visibility', 'visible');
             $('#tail2').css('visibility', 'hidden');
             setTimeout(function () {
+                if (catTailVisible === false) {return;}
                 $('#tail2').css('visibility', 'visible');
                 $('#tail3').css('visibility', 'hidden');
                 setTimeout(function() {
+                    if (catTailVisible === false) {return;}
                     $('#tail').css('visibility', 'visible');
                     $('#tail2').css('visibility', 'hidden');
                     flapTail();
@@ -659,10 +694,10 @@ function flapTail() {
 
 
 function updateAnimalSource(){
-    var audio = document.getElementById('audio');
+    /*var audio = document.getElementById('audio');
     audio.src='music/humor.mp3';
 
-    /*audio.src='music/animal.mp3';*/
+    //audio.src='music/animal.mp3';
     audio.autoplay=true;
-    audio.load();
+    audio.load();*/
 }
