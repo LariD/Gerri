@@ -339,7 +339,7 @@ function getNet(){
     if ($('#map').css('background'), 'url(assets/piha.png)')
 
     {
-        if (canvas_left > 400 && canvas_left < 450){
+        if (canvas_left > 300 && canvas_left < 450){
             if(jumping == true)
             {
                 $('#hand_net').css('visibility', 'hidden');
@@ -403,7 +403,6 @@ function flapTail(){
     $("#tail2").css('visibility', 'visible');
 }
 
-setInterval()
 
 $('#fantasy').on('click', function()
 {
@@ -540,8 +539,7 @@ $('#flowerpot').on('click', function (){
         $('#speech_bubble2').css('visibility', 'hidden');
         animatePot($('#flowerpot')),
             setTimeout(function () {
-                flyStart();
-                animateButterfly($('#butterfly'));
+                butterflyStart();
                 $('embed').remove();
                 $('body').append('<embed src="music/butterfly.wav" autostart="true" hidden="true" loop="true">');
                 $('#zero_score').css('visibility', 'hidden');
@@ -638,11 +636,12 @@ $('#fly').on('click', function(){
         $('.fence').css('visibility', 'hidden');
         $('#lawnmower').css('visibility', 'hidden');
         $('#home').css('visibility', 'visible');
+        $('#rock').css('visibility', 'visible');
         $('#flowerpot').css('visibility', 'visible');
 
         $('#speech_bubble4').css('visibility', 'visible');
 
-    }, 5000);
+    }, 2000);
 
 });
 
@@ -650,6 +649,10 @@ $('#fly').on('click', function(){
  * Butterfly related things
  **************************************************************/
 var time = 0;
+function butterflyStart() {
+    $('#butterfly').css('visibility', 'visible');
+    animateButterfly();
+}
 function animateButterfly() {
     time += 0.01;
 
@@ -676,8 +679,19 @@ $('#butterfly').on('click', function(){
         $('#score').css('visibility', 'hidden');
         $('#score5').css('visibility', 'hidden');
         $('#score15').css('visibility', 'visible');
-        alert("Great! Now you're ready to have an adventure!");
+
     }, 500);
+    setTimeout(function(){
+        $('#map').css('background-image', 'url(assets/cave.png)');
+        $('#flowerpot').css('visibility', 'hidden');
+        $('#rock').css('visibility', 'hidden');
+        $('#home').css('visibility', 'hidden');
+        $('#canvas').css('left','0px');
+        $('#cat').css('visibility', 'visible');
+        $('#tail').css('visibility', 'visible');
+        $('#tail2').css('visibility', 'visible');
+        $('#tail3').css('visibility', 'visible');
+    }, 2000);
 
 });
 
