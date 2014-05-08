@@ -389,11 +389,7 @@ function blink() {
     $("#dark").fadeTo(1000, 0.5).fadeTo(200, 2.0);
 }
 
-setInterval(function(){flapTail()}, 1000);
-function flapTail(){
-    $("#tail").css('visibility', 'hidden');
-    $("#tail2").css('visibility', 'visible');
-}
+
 
 $('#rope').on('click', function(){
      $('#rope').css('visibility', 'hidden');
@@ -633,11 +629,34 @@ $('#butterfly').on('click', function(){
         $('#canvas').css('left','0px');
         $('#cat').css('visibility', 'visible');
         $('#tail').css('visibility', 'visible');
-        $('#tail2').css('visibility', 'visible');
-        $('#tail3').css('visibility', 'visible');
+        flapTail();
     }, 2000);
 
 });
+
+function flapTail() {
+    setTimeout(function () {
+        $('#tail2').css('visibility', 'visible');
+        $('#tail').css('visibility', 'hidden');
+        setTimeout(function () {
+            $('#tail3').css('visibility', 'visible');
+            $('#tail2').css('visibility', 'hidden');
+            setTimeout(function () {
+                $('#tail2').css('visibility', 'visible');
+                $('#tail3').css('visibility', 'hidden');
+                setTimeout(function() {
+                    $('#tail').css('visibility', 'visible');
+                    $('#tail2').css('visibility', 'hidden');
+                    flapTail();
+                }, 500);
+            }, 500);
+        }, 500);
+    }, 500);
+}
+
+
+
+
 
 function updateAnimalSource(){
     var audio = document.getElementById('audio');
