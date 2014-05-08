@@ -37,7 +37,7 @@ var fpsInterval = setInterval(updateFPS, 1000);
 var numFramesDrawn = 0;
 var curFPS = 0;
 var jumping = false;
-
+var currentMap = 'library_first';
 
 
 function updateFPS() {
@@ -291,13 +291,13 @@ function getBook(){
     var canvas_left = parseInt($('#canvas').css('left'));
     if (canvas_left > 480)
     {
-        if ($('#map').css('background'), 'url(images/secret_room.jpg)'){
+        if (currentMap === 'secret_room') {
             if(jumping == true){
                 $('#animal').css('visibility', 'hidden');
                 setTimeout(function () {
                     $('embed').remove();
                     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-                    $('#map').css('background-image', 'url(assets/piha.png)');
+                    changeMap('piha');
                     $('.fence').css('visibility', 'visible');
                     $('#canvas').css('left', '70px');
                     $('#rope').css('visibility', 'visible');
@@ -319,7 +319,7 @@ function getRope(){
         var canvas_left = parseInt($('#canvas').css('left'));
         if (canvas_left > 10 && canvas_left < 400)
         {
-            if ($('#map').css('background'), 'url(assets/piha.png)'){
+            if (currentMap === 'piha'){
                 if(jumping == true)
                 {
                     $('#rope').css('visibility', 'hidden');
@@ -336,7 +336,7 @@ function getRope(){
 
 function getNet(){
     var canvas_left = parseInt($('#canvas').css('left'));
-    if ($('#map').css('background'), 'url(assets/piha.png)')
+    if (currentMap === 'piha')
 
     {
         if (canvas_left > 300 && canvas_left < 450){
@@ -352,10 +352,15 @@ function getNet(){
     }
 }
 
+function changeMap(mapName) {
+    currentMap = mapName;
+    $('#map').css('background-image', 'url(assets/' + mapName + '.png)');
+}
+
 function jumpOverObstacle(){
     /*var canvas_left = parseInt($('#canvas').css('left'));
     if(canvas_left > 170){
-        if($('#map').css('background'), 'url(assets/forest.png)'){
+        if(currentMap === 'forest'){
             if(jumping == true)
             {
                 $('#canvas').css('top', '127px');
@@ -372,7 +377,7 @@ function hide_all_books() {
 //click on the dark wall to enter secret room
 $('#dark').on('click', function()
 {
-    $('#map').css('background-image', 'url(images/secret_room.jpg)');
+    changeMap('secret_room');
     $('#animal').css('visibility', 'visible');
     $('#dark').css('visibility', 'hidden');
 })
@@ -568,7 +573,7 @@ $('#fly').on('click', function(){
         $('#score5').css('visibility', 'hidden');
     }, 500);
     setTimeout(function(){
-        $('#map').css('background-image', 'url(assets/forest.png)');
+        changeMap('forest');
         $('#zero_score').css('visibility', 'hidden');
         $('#score5').css('visibility', 'hidden');
         $('#canvas').css('left','0px');
@@ -621,7 +626,7 @@ $('#butterfly').on('click', function(){
 
     }, 500);
     setTimeout(function(){
-        $('#map').css('background-image', 'url(assets/cave.png)');
+        changeMap('cave');
         $('#flowerpot').css('visibility', 'hidden');
         $('#rock').css('visibility', 'hidden');
         $('#home').css('visibility', 'hidden');
