@@ -366,11 +366,7 @@ function jumpOverObstacle(){
 }
 
 function hide_all_books() {
-    $("#adventure").hide();
     $("#animal").hide();
-    $("#fantasy").hide();
-    $("#horror").hide();
-    $("#humor").hide();
 }
 
 //click on the dark wall to enter secret room
@@ -379,15 +375,6 @@ $('#dark').on('click', function()
     $('#map').css('background-image', 'url(images/secret_room.jpg)');
     $('#animal').css('visibility', 'visible');
     $('#dark').css('visibility', 'hidden');
-})
-
-$('#adventure').on('click', function()
-{
-    $('#map').css('background-image', 'url(assets/bg_adv.png)');
-    hide_all_books();
-    alert("You entered the ADVENTURE world!");
-    updateAdventureSource();
-
 })
 
 setInterval(function(){blink()}, 1000);
@@ -403,34 +390,6 @@ function flapTail(){
     $("#tail2").css('visibility', 'visible');
 }
 
-
-$('#fantasy').on('click', function()
-{
-    $('#map').css('background-image', 'url(assets/bg_fantasy.png)');
-    hide_all_books();
-    alert("You entered the FANTASY world!");
-    updateFantasySource();
-})
-
-$('#horror').on('click', function()
-{
-    $('#map').css('background-image', 'url(assets/bg_horror.png)');
-    hide_all_books();
-    alert("You entered the HORROR world!");
-    updateHorrorSource();
-})
-
-$('#humor').on('click', function()
-{
-    $('#map').css('background-image', 'url(assets/bg_humor.png)');
-    hide_all_books();
-    alert("You entered the HUMOR world!");
-    updateHumorSource();
-})
-
-//items clicking
-
-
 $('#rope').on('click', function(){
      $('#rope').css('visibility', 'hidden');
     $('embed').remove();
@@ -438,8 +397,6 @@ $('#rope').on('click', function(){
      $('#inventory-rope').css('visibility', 'visible');
 
  });
-
-
 
 $('#hand_net').on('click', function(){
     $('#hand_net').css('visibility', 'hidden');
@@ -570,24 +527,6 @@ $('#rope, #hand_net').on('click', function() {
     }
 });
 
-
-/*function animateFly(targetElement){
-    $(targetElement).animate({ top: "-=150px"},
-        {
-            duration: 500,
-            complete: function ()
-            {
-                targetElement.animate({ left: "+=350" },
-                    {
-                        duration: 500,
-                     complete: function ()
-                     {
-                     animateFly(targetElement);
-                     }
-                    });
-            }
-        });
-};*/
 /***************************************************************
  * Fly related things
  **************************************************************/
@@ -700,34 +639,6 @@ function updateAnimalSource(){
     audio.src='music/humor.mp3';
 
     /*audio.src='music/animal.mp3';*/
-    audio.autoplay=true;
-    audio.load();
-}
-
-function updateAdventureSource(){
-    var audio = document.getElementById('audio');
-    audio.src='music/adventure1.mp3';
-    audio.autoplay=true;
-    audio.load();
-}
-
-function updateFantasySource(){
-    var audio = document.getElementById('audio');
-    audio.src='music/fantasy1.mp3';
-    audio.autoplay=true;
-    audio.load();
-}
-
-function updateHorrorSource(){
-    var audio = document.getElementById('audio');
-    audio.src='music/horror1.mp3';
-    audio.autoplay=true;
-    audio.load();
-}
-
-function updateHumorSource(){
-    var audio = document.getElementById('audio');
-    audio.src='music/humor.mp3';
     audio.autoplay=true;
     audio.load();
 }

@@ -210,11 +210,6 @@ audio{
     top: 290px;
 }
 
-#adventure, #fantasy, #horror, #humor
-{
-    visibility: hidden;
-}
-
 #animal{
     position: absolute;
     left: 645px;
