@@ -4,8 +4,7 @@ body {
 }
 
 #map{
-    /*background: transparent url(images/secret_room.jpg) repeat-x scroll 0 0;*/
-    background: transparent url(images/library_first.png) repeat-x scroll 0 0;
+    background: transparent url('assets/library_first.png') repeat-x scroll 0 0;
     margin-left: auto;
     margin-right: auto;
     width: 800px;

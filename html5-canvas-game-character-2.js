@@ -37,7 +37,7 @@ var fpsInterval = setInterval(updateFPS, 1000);
 var numFramesDrawn = 0;
 var curFPS = 0;
 var jumping = false;
-var currentMap = 'library_first';
+var currentMap;
 
 
 function updateFPS() {
@@ -45,6 +45,8 @@ function updateFPS() {
 	numFramesDrawn = 0;
 }
 function prepareCanvas(canvasDiv, canvasWidth, canvasHeight) {
+    // Adjust jQuery animation interval to ease CPU usage (jQuery default is 13 ms)
+    jQuery.fx.interval = 25;
 	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth);
@@ -68,6 +70,7 @@ function prepareCanvas(canvasDiv, canvasWidth, canvasHeight) {
 	loadImage("leftArm-jump");
 	loadImage("legs-jump");
 	loadImage("rightArm-jump");
+    showMap('library_first');
 }
 
 function loadImage(name) {
