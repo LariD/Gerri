@@ -3,6 +3,10 @@ body {
     background-color: black;
 }
 
+#debug p {
+    color: gray;
+}
+
 #map{
     background: transparent url('assets/library_first.png') repeat-x scroll 0 0;
     margin-left: auto;

@@ -38,7 +38,13 @@ var numFramesDrawn = 0;
 var curFPS = 0;
 var jumping = false;
 var currentMap;
-
+var mapWidth = 800;
+var gerriWidth = 130;
+var pihaFencePosition = 100;
+var pihaFenceWidth = 160;
+var pihaFenceHeight = 100;
+var inventoryHasRope = false;
+var inventoryHasNet = false;
 
 function updateFPS() {
 	curFPS = numFramesDrawn;
@@ -171,16 +177,19 @@ function eyeBlink() {
 }
 
 function jump() {
-  if (!jumping) {
-	jumping = true;
-      var oldTop = parseInt($("#canvas").css("top"));
-      $("#canvas").css("top", oldTop - jumpHeight);
-	setTimeout(land, 500);
-  }
+    if (!jumping) {
+	    jumping = true;
+        getRope();
+        getNet();
+        getBook();
+        var oldTop = parseInt($("#canvas").css("top"));
+        $("#canvas").css("top", oldTop - jumpHeight);
+	    setTimeout(land, 500);
+    }
 
 }
 function land() {
-  jumping = false;
+    jumping = false;
     var oldTop = parseInt($("#canvas").css("top"));
     $("#canvas").css("top", oldTop + jumpHeight);
 
@@ -193,20 +202,20 @@ $("html").keydown(function(event){
     if (keys.length > 2) return;
     keys.push (event.which);
     moveHero();
-    getBook();
-    getRope();
-    getNet();
     jumpOverObstacle();
-
 });
 
 
 var movingRight = false;
 var movingLeft = false;
-var distance = 120;
-
+var gerriAnimationRunning = false;
 function moveHero () {
-    var moveTo = keys[0];
+    var moveTo = keys[0],
+        distance = 160;
+    keys = keys.slice(1);
+    if (gerriAnimationRunning) {
+        return;
+    }
     if(moveTo == "37") {
         // Left
         if (movingLeft == false) {
@@ -214,34 +223,73 @@ function moveHero () {
             movingLeft = true;
             var canvas_left = parseInt($('#canvas').css('left'));
             if (canvas_left > 0) {
-                var distance = 180;
-                if (canvas_left < distance) {
-                    distance = canvas_left;
-                }
-                $('#canvas').stop(true).animate(
-                    { left:  "-=" + distance + "px" },
-                    { easing: "linear",
-                        complete: function() { movingLeft = false; }
+                // piha map
+                if (currentMap === 'piha') {
+                    // fence detection
+                    if (canvas_left <= pihaFencePosition) {
+                        // On the left side of the fence - allow normal movement
+                    } else if (canvas_left <= (pihaFencePosition + pihaFenceWidth)) {
+                        // fence reached - disable moving further left
+                        movingLeft = false;
+                    } else if (canvas_left > (pihaFencePosition + pihaFenceWidth)) {
+                        // make sure Gerri doesn't work over the fence
+                        if ((canvas_left - distance) < (pihaFencePosition + pihaFenceWidth)) {
+                            distance = canvas_left - (pihaFencePosition + pihaFenceWidth);
+                        }
                     }
-                );
+                }
+                // Check if movingLeft wasn't cancelled
+                if (movingLeft) {
+                    if (canvas_left < distance) {
+                        distance = canvas_left;
+                    }
+                    $('#canvas').stop(true).animate(
+                        { left:  "-=" + distance + "px" },
+                        { easing: "linear",
+                            complete: function() { movingLeft = false; }
+                        }
+                    );
+                }
             }
         }
     }
 
     if(moveTo == "39") {
         // Right
-
         if (movingRight == false) {
             movingLeft = false;
             movingRight = true;
             canvas_left = parseInt($('#canvas').css('left'));
-            if (canvas_left < 600) {
-                $('#canvas').stop(true).animate(
-                    { left:  "+=180" },
-                    { easing: "linear",
-                        complete: function() { movingRight = false; }
+            // check if right side of the screen is reached
+            if (canvas_left < (mapWidth - gerriWidth)) {
+                // piha map
+                if (currentMap === 'piha') {
+                    // fence detection
+                    if (canvas_left < pihaFencePosition) {
+                        // set distance to how much there is left until fence
+                        // so that animation wouldn't take Gerri through the fence
+                        distance = pihaFencePosition - canvas_left;
+                    } else if (canvas_left < (pihaFencePosition + pihaFenceWidth)) {
+                        movingRight = false;
+                        if (inventoryHasRope) {
+                            // Gerri has rope, start climbing over animation
+                            jumpOverTheFence();
+                        }
                     }
-                );
+                }
+                // Check if movingRight wasn't cancelled
+                if (movingRight) {
+                    if ((canvas_left + distance > (mapWidth - gerriWidth))) {
+                        // change the distance so that gerri doesn't go out of the screen
+                        distance = (mapWidth - gerriWidth) - canvas_left;
+                    }
+                    $('#canvas').stop(true).animate(
+                        { left:  "+=" + distance + "px" },
+                        { easing: "linear",
+                            complete: function() { movingRight = false; }
+                        }
+                    );
+                }
             }
         }
     }
@@ -256,10 +304,20 @@ function moveHero () {
         // Down
         //$("#canvas").stop(true).animate({"top" : "+=30px"});
     }
-
-    keys = keys.slice (1);
 };
 
+function jumpOverTheFence() {
+    gerriAnimationRunning = true;
+    setTimeout(function () {
+        $('#canvas').animate({top: "-="+pihaFenceHeight+"px"}, {duration: 200, complete: function() {
+            $('#canvas').animate({left: "+="+pihaFenceWidth+"px"}, {duration: 200, complete: function() {
+                $('#canvas').animate({top: "+="+pihaFenceHeight+"px"}, {duration: 200, complete: function() {
+                    gerriAnimationRunning = false;
+                }});
+            }});
+        }});
+    }, 250);
+}
 
 function getBook(){
     var canvas_left = parseInt($('#canvas').css('left'));
@@ -279,36 +337,31 @@ function getBook(){
     }
 }
 
-function getRope(){
+function getRope() {
+    if (currentMap === 'piha') {
         var canvas_left = parseInt($('#canvas').css('left'));
-        if (canvas_left > 10 && canvas_left < 400)
-        {
-            if (currentMap === 'piha'){
-                if(jumping == true)
-                {
-                    $('#rope').css('visibility', 'hidden');
-                    $('embed').remove();
-                    $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
-                    $('#inventory-rope').css('visibility', 'visible');
-                    //$('#inventory_hand_net').css('visibility', 'visible');
-                    //$('#hand_net').css('visibility', 'hidden');
-
-                }
+        if (canvas_left < 50) {
+            if (jumping === true) {
+                $('#rope').css('visibility', 'hidden');
+                $('embed').remove();
+                $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
+                $('#inventory-rope').css('visibility', 'visible');
+                inventoryHasRope = true;
             }
         }
+    }
 }
 
-function getNet(){
-    var canvas_left = parseInt($('#canvas').css('left'));
+function getNet() {
     if (currentMap === 'piha') {
-        if (canvas_left > 300 && canvas_left < 450){
-            if(jumping == true)
-            {
+        var canvas_left = parseInt($('#canvas').css('left'));
+        if (canvas_left > 300 && canvas_left < 450) {
+            if(jumping === true) {
                 $('#hand_net').css('visibility', 'hidden');
                 $('embed').remove();
                 $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
                 $('#inventory_hand_net').css('visibility', 'visible');
-
+                inventoryHasNet = true;
             }
         }
     }
@@ -334,7 +387,7 @@ function showMap(mapName) {
             $('#lawnmower').css('visibility', 'visible');
             updateAnimalSource();
             // Position player
-            $('#canvas').css('left', '70px');
+            $('#canvas').css('left', '0px');
             break;
         case 'forest':
             $('#home').css('visibility', 'visible');
