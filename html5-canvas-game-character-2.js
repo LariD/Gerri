@@ -294,7 +294,6 @@ function moveLeft(distance) {
         movingLeft = true;
         var canvas_left = parseInt($gerri.css('left'));
         if (canvas_left > 0) {
-            // piha map
             if (currentMap === 'piha') {
                 distance = mapPihaMove(canvas_left, distance, "left");
             } else if (currentMap === 'forest') {
@@ -332,7 +331,6 @@ function moveRight(distance) {
         var canvas_left = parseInt($gerri.css('left'));
         // check if right side of the screen is reached
         if (canvas_left < (mapWidth - gerriWidth)) {
-            // piha map
             if (currentMap === 'piha') {
                 distance = mapPihaMove(canvas_left, distance, "right");
             } else if (currentMap === 'forest') {
@@ -397,9 +395,11 @@ function mapPihaMove(player_pos, distance, direction) {
     if (direction == "right") {
         // fence detection
         if (player_pos < pihaFencePosition) {
-            // set distance to how much there is left until fence
-            // so that animation wouldn't take Gerri through the fence
-            distance = pihaFencePosition - player_pos;
+            if (distance > (pihaFencePosition - player_pos)) {
+                // set distance to how much there is left until fence
+                // so that animation wouldn't take Gerri through the fence
+                distance = pihaFencePosition - player_pos;
+            }
         } else if (player_pos < (pihaFencePosition + pihaFenceWidth)) {
             distance = 0;
             if (inventoryHasRope) {
