@@ -109,8 +109,8 @@ audio{
 #butterfly{
     visibility: hidden;
     position: absolute;
-    top: 420px;
-    left: 800px;
+    top: 340px;
+    left: 720px;
 }
 
 #jar{
@@ -120,7 +120,6 @@ audio{
 }
 
 #score{
-    visibility: hidden;
     position: absolute;
     left: 730px;
     top: 620px;
@@ -183,14 +182,12 @@ audio{
 }
 
 #score5{
-    visibility: hidden;
     position: absolute;
     left: 730px;
     top: 620px;
 }
 
 #score15{
-    visibility: hidden;
     position: absolute;
     left: 730px;
     top: 620px;
