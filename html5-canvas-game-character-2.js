@@ -202,7 +202,6 @@ $("html").keydown(function(event){
     if (keys.length > 2) return;
     keys.push (event.which);
     moveHero();
-    jumpOverObstacle();
 });
 
 
@@ -452,19 +451,6 @@ function debug_changeMap(mapName) {
     hideMap('forest');
     hideMap('cave');
     showMap(mapName);
-}
-
-function jumpOverObstacle(){
-    /*var canvas_left = parseInt($('#canvas').css('left'));
-    if(canvas_left > 170){
-        if(currentMap === 'forest'){
-            if(jumping == true)
-            {
-                $('#canvas').css('top', '127px');
-            }
-        }
-
-    }*/
 }
 
 //click on the dark wall to enter secret room
