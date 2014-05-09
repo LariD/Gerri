@@ -55,6 +55,9 @@ var forestHouseWidth = 300;
 var forestHouseHeight = 140;
 var inventoryHasRope = false;
 var inventoryHasNet = false;
+var inventoryNetInUse = false;
+var inventoryNetTop = 600;
+var inventoryNetLeft = 250;
 
 $(document).ready(function () {
     $('#debug').hide();
@@ -65,7 +68,53 @@ $(document).ready(function () {
     gerriDefaultTop = parseInt($gerri.css("top"));
     showMap('library_first');
     setScore(0);
+    $(document).on('mousemove', function (e) {
+        var offset,
+            mouseX,
+            mouseY;
+        if (inventoryNetInUse) {
+            offset = $('#map').offset();
+            mouseX = Math.min(e.pageX - offset.left, 800);
+            mouseY = Math.min(e.pageY - offset.top, 600);
+            if (mouseX < 0) mouseX = 0;
+            if (mouseY < 0) mouseY = 0;
+            $('#inventory_hand_net').css({
+                left: mouseX,
+                top: mouseY
+            });
+        }
+    });
+    $(document).on('mousedown', function (e) {
+        var $target;
+        if (inventoryNetInUse) {
+            if (e.pageY > 600) {
+                inventoryPutNetAway();
+            } else {
+                $('embed').remove();
+                $('body').append('<embed src="music/GerriNet.wav" autostart="true" hidden="true" loop="false">');
+                $target = $('#inventory_hand_net');
+                $target.animate({left: "-=20px"}, {duration: 200, complete: function () {
+                    $target.animate({left: "+=20px"}, {duration: 200, complete: function () {
+
+                    }});
+                }});
+            }
+        }
+    });
+    $('#inventory_hand_net').click(function () {
+        if (inventoryNetInUse === false) {
+            inventoryNetInUse = true;
+        }
+    });
 });
+
+function inventoryPutNetAway() {
+    inventoryNetInUse = false;
+    $('#inventory_hand_net').css({
+        left: inventoryNetLeft,
+        top: inventoryNetTop
+    });
+}
 
 function updateFPS() {
 	curFPS = numFramesDrawn;
@@ -894,7 +943,7 @@ $('#lawnmower').on('click', function () {
     if (lawnmowerClicked === false && inventoryHasNet) {
         lawnmowerClicked = true;
         $('embed').remove();
-        $('body').append('<embed src="music/GerriLawnmower.wav" autostart="false" hidden="true" loop="false">');
+        $('body').append('<embed src="music/GerriLawnmower.wav" autostart="true" hidden="true" loop="false">');
         $('.grass').fadeOut(5000);
         $('#speech_bubble2').css('visibility', 'hidden');
         animateLawnmower($('#lawnmower'));
@@ -922,7 +971,7 @@ $('#flowerpot').on('click', function () {
 var flyAnimate = false;
 function flyStart() {
     $('embed').remove();
-    $('body').append('<embed src="music/GerriFly.wav" autostart="false" hidden="true" loop="true">');
+    $('body').append('<embed src="music/GerriFly.wav" autostart="true" hidden="true" loop="true">');
     // Move fly to the starting point
     $("#fly").css('left', '750px');
     $("#fly").css('top', '420px');
@@ -945,7 +994,8 @@ function flyRight() {
         $("#fly").animate({left: "+=500"}, 2000, "swing", flyLeft);
     }
 }
-$('#fly').on('click', function(){
+$('#fly').on('click', function () {
+    inventoryPutNetAway();
     $('#fly').stop(true, false).css('visibility', 'hidden');
     flyAnimate = false;
     $('#speech_bubble3').css('visibility', 'hidden');
@@ -1006,7 +1056,8 @@ function animateButterfly() {
     });
 }
 
-$('#butterfly').on('click', function() {
+$('#butterfly').on('click', function () {
+    inventoryPutNetAway();
     $('#butterfly').stop(true, false).css('visibility', 'hidden');
     $('embed').remove();
     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');

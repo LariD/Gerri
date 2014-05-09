@@ -3,10 +3,13 @@ body {
     background-color: black;
 }
 #debug_toggle {
+    position: absolute;
     color: gray;
     cursor: pointer;
 }
 #debug {
+    position: absolute;
+    top: 20px;
     color: gray;
     list-style-type: none;
 }
@@ -48,7 +51,7 @@ body {
     width: 188px;
 }
 
-.inventory {
+#inventory {
     position: absolute;
     top: 587px;
     -webkit-user-select: none;
