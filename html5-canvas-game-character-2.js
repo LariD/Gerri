@@ -267,7 +267,7 @@ $('html').keyup(function (event) {
 });
 function moveHero () {
     var moveTo = keys[0],
-        distance = 100;
+        distance = 25;
     keys = keys.slice(1);
     if (gerriAnimationRunning) {
         return;
@@ -306,8 +306,9 @@ function moveLeft(distance) {
                     distance = canvas_left;
                 }
                 $gerri.stop(true).animate(
-                    { left:  "-=" + distance + "px" },
-                    { easing: "linear",
+                    { left:  "-=" + distance + "px" }, {
+                        easing: "linear",
+                        duration: 100,
                         complete: function() {
                             dropElevation();
                             movingLeft = false;
@@ -343,9 +344,9 @@ function moveRight(distance) {
                     // change the distance so that gerri doesn't go out of the screen
                     distance = (mapWidth - gerriWidth) - canvas_left;
                 }
-                $gerri.stop(true).animate(
-                    { left:  "+=" + distance + "px" },
-                    { easing: "linear",
+                $gerri.stop(true).animate({ left:  "+=" + distance + "px" }, {
+                        easing: "linear",
+                        duration: 100,
                         complete: function() {
                             dropElevation();
                             movingRight = false;
