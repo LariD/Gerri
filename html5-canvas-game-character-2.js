@@ -54,6 +54,13 @@ var forestHouseHeight = 140;
 var inventoryHasRope = false;
 var inventoryHasNet = false;
 
+$(document).ready(function () {
+    $('#debug').hide();
+    $('#debug_toggle').on('click', function () {
+        $('#debug').toggle();
+    });
+});
+
 function updateFPS() {
 	curFPS = numFramesDrawn;
 	numFramesDrawn = 0;
@@ -497,32 +504,53 @@ function getBook() {
 }
 
 function getRope() {
-    if (currentMap === 'piha') {
+    if (currentMap === 'piha' && inventoryHasRope === false) {
         var canvas_left = parseInt($('#canvas').css('left'));
         if (canvas_left < 50) {
             if (jumping === true) {
-                $('#rope').css('visibility', 'hidden');
-                $('embed').remove();
-                $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
-                $('#inventory-rope').css('visibility', 'visible');
-                inventoryHasRope = true;
+                pickRope();
             }
         }
     }
 }
 
 function getNet() {
-    if (currentMap === 'piha') {
+    if (currentMap === 'piha' && inventoryHasNet === false) {
         var canvas_left = parseInt($('#canvas').css('left'));
         if (canvas_left > 300 && canvas_left < 450) {
             if(jumping === true) {
-                $('#hand_net').css('visibility', 'hidden');
-                $('embed').remove();
-                $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
-                $('#inventory_hand_net').css('visibility', 'visible');
-                inventoryHasNet = true;
+                pickNet();
             }
         }
+    }
+}
+
+function pickRope() {
+    if (inventoryHasRope === false) {
+        $('#rope').css('visibility', 'hidden');
+        $('embed').remove();
+        $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
+        $('#inventory-rope').css('visibility', 'visible');
+        inventoryHasRope = true;
+        checkGotRopeAndNet();
+    }
+}
+
+function pickNet() {
+    if (inventoryHasNet === false) {
+        $('#hand_net').css('visibility', 'hidden');
+        $('embed').remove();
+        $('body').append('<embed src="music/GerriClick.wav" autostart="false" hidden="true" loop="false">');
+        $('#inventory_hand_net').css('visibility', 'visible');
+        inventoryHasNet = true;
+        checkGotRopeAndNet();
+    }
+}
+
+function checkGotRopeAndNet() {
+    if (inventoryHasNet && inventoryHasRope) {
+        $('#speech_bubble').css('visibility', 'hidden');
+        $('#speech_bubble2').css('visibility', 'visible');
     }
 }
 
@@ -771,21 +799,19 @@ function blink() {
 
 
 
-$('#rope').on('click', function(){
-    $('#rope').css('visibility', 'hidden');
-    $('embed').remove();
-    $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-    $('#inventory-rope').css('visibility', 'visible');
-
- });
-
-$('#hand_net').on('click', function(){
-    $('#hand_net').css('visibility', 'hidden');
-    $('embed').remove();
-    $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-    $('#inventory_hand_net').css('visibility', 'visible');
+$('#rope').on('click', function () {
+    pickRope();
 });
-$('#sticks').on('click', function(){
+
+$('#hand_net').on('click', function () {
+    var player_pos = parseInt($('#canvas').css('left'));
+    if (player_pos < (pihaFencePosition + pihaFenceWidth)) {
+        // Only allow to click on the net if the player has passed the fence
+        return;
+    }
+    pickNet();
+});
+$('#sticks').on('click', function () {
     $('#sticks').css('visibility', 'hidden');
     $('embed').remove();
     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
@@ -849,8 +875,8 @@ function animatePot(targetElement) {
 };
 
 var lawnmowerClicked = false;
-$('#lawnmower').on('click', function (){
-    if (lawnmowerClicked == false) {
+$('#lawnmower').on('click', function () {
+    if (lawnmowerClicked === false && inventoryHasNet) {
         lawnmowerClicked = true;
         $('embed').remove();
         $('body').append('<embed src="music/GerriLawnmower.wav" autostart="false" hidden="true" loop="false">');
@@ -869,8 +895,6 @@ $('#lawnmower').on('click', function (){
 
 
             }, 1500);
-
-
     }
 });
 
@@ -898,24 +922,6 @@ $('#flowerpot').on('click', function (){
             }, 1500);
 
 
-    }
-});
-
-var ropeClicked = false;
-var netClicked = false;
-
-$('#rope').on('click', function() {
-    ropeClicked = true;
-});
-
-$('#hand_net').on('click', function() {
-    netClicked = true;
-});
-
-$('#rope, #hand_net').on('click', function() {
-    if (ropeClicked && netClicked) {
-        $('#speech_bubble2').css('visibility', 'visible');
-        $('#speech_bubble').css('visibility', 'hidden');
     }
 });
 

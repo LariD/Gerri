@@ -2,9 +2,13 @@ body {
     margin: 0;
     background-color: black;
 }
-
-#debug p {
+#debug_toggle {
     color: gray;
+    cursor: pointer;
+}
+#debug {
+    color: gray;
+    list-style-type: none;
 }
 
 #map{
