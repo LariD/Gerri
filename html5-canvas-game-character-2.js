@@ -410,9 +410,151 @@ function showMap(mapName) {
             $('#cat').css('visibility', 'visible');
             $('#tail').css('visibility', 'visible');
             $('#bush').css('visibility', 'visible');
+            $('#sticks').css('visibility', 'visible');
+            $("#sticks").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
+
             // Position player
             $('#canvas').css('left','0px');
             showCatTail();
+            setTimeout(function(){
+                $('#catSpeech1').css('visibility', 'visible');
+            }, 2000);
+            setTimeout(function(){
+                $('#catSpeech1').css('visibility', 'hidden');
+            }, 5000);
+            setTimeout(function(){
+                $('#catSpeech2').css('visibility', 'visible');
+            }, 5000);
+            setTimeout(function(){
+                $('#catSpeech2').css('visibility', 'hidden');
+            }, 9000);
+            setTimeout(function(){
+                $('#playerSpeech1').css('visibility', 'visible');
+            }, 9000);
+            setTimeout(function(){
+                $('#playerSpeech1').css('visibility', 'hidden');
+            }, 11000);
+            setTimeout(function(){
+                $('#catSpeech3').css('visibility', 'visible');
+            }, 11000);
+            setTimeout(function(){
+                $('#catSpeech3').css('visibility', 'hidden');
+            }, 13000);
+            setTimeout(function(){
+                $('#catSpeech4').css('visibility', 'visible');
+            }, 13000);
+            setTimeout(function(){
+                $('#catSpeech4').css('visibility', 'hidden');
+            }, 16000);
+            setTimeout(function(){
+                $('#catSpeech5').css('visibility', 'visible');
+            }, 16000);
+            setTimeout(function(){
+                $('#catSpeech5').css('visibility', 'hidden');
+            }, 18000);
+             setTimeout(function(){
+             $('#playerSpeech2').css('visibility', 'visible');
+             }, 18000);
+             setTimeout(function(){
+             $('#playerSpeech2').css('visibility', 'hidden');
+             }, 20000);
+            setTimeout(function(){
+                $('#catSpeech6').css('visibility', 'visible');
+            }, 20000);
+            setTimeout(function(){
+                $('#catSpeech6').css('visibility', 'hidden');
+            }, 22000);
+            setTimeout(function(){
+                $('#catSpeech7').css('visibility', 'visible');
+            }, 22000);
+            setTimeout(function(){
+                $('#catSpeech7').css('visibility', 'hidden');
+            }, 24000);
+            setTimeout(function(){
+                $('#catSpeech8').css('visibility', 'visible');
+            }, 24000);
+            setTimeout(function(){
+                $('#catSpeech8').css('visibility', 'hidden');
+            }, 26000);
+            setTimeout(function(){
+                $('#spirit').css('visibility', 'visible');
+            }, 26000);
+            setTimeout(function(){
+                $('#spirit').css('visibility', 'hidden');
+            }, 28000);
+            setTimeout(function(){
+                $('#playerSpeech3').css('visibility', 'visible');
+            }, 28000);
+            setTimeout(function(){
+                $('#playerSpeech3').css('visibility', 'hidden');
+            }, 30000);
+            setTimeout(function(){
+                $('#catSpeech9').css('visibility', 'visible');
+            }, 30000);
+            setTimeout(function(){
+                $('#catSpeech9').css('visibility', 'hidden');
+            }, 32000);
+            setTimeout(function(){
+                $('#turtle').css('visibility', 'visible');
+            }, 32000);
+            setTimeout(function(){
+                $('#playerSpeech4').css('visibility', 'visible');
+            }, 34000);
+            setTimeout(function(){
+                $('#playerSpeech4').css('visibility', 'hidden');
+            }, 36000);
+            setTimeout(function(){
+                $('#playerSpeech5').css('visibility', 'visible');
+            }, 36000);
+            setTimeout(function(){
+                $('#playerSpeech5').css('visibility', 'hidden');
+            }, 38000);
+            setTimeout(function(){
+                $('#playerSpeech6').css('visibility', 'visible');
+            }, 38000);
+            setTimeout(function(){
+                $('#playerSpeech6').css('visibility', 'hidden');
+            }, 40000);
+            setTimeout(function(){
+                $('#turtleSpeech1').css('visibility', 'visible');
+            }, 40000);
+            setTimeout(function(){
+                $('#turtleSpeech1').css('visibility', 'hidden');
+            }, 42000);
+            setTimeout(function(){
+                $('#turtleSpeech2').css('visibility', 'visible');
+            }, 42000);
+            setTimeout(function(){
+                $('#turtleSpeech2').css('visibility', 'hidden');
+            }, 44000);
+            setTimeout(function(){
+                $('#catSpeech10').css('visibility', 'visible');
+            }, 44000);
+            setTimeout(function(){
+                $('#catSpeech10').css('visibility', 'hidden');
+            }, 46000);
+            setTimeout(function(){
+                $('#turtleSpeech3').css('visibility', 'visible');
+            }, 46000);
+            setTimeout(function(){
+                $('#turtleSpeech3').css('visibility', 'hidden');
+            }, 53000);
+            setTimeout(function(){
+                $('#turtle').css('visibility', 'hidden');
+            }, 57000);
+            /*setTimeout(function(){
+                $('#catSpeech11').css('visibility', 'visible');
+            }, 5000);
+            setTimeout(function(){
+                $('#catSpeech11').css('visibility', 'hidden');
+            }, 5000);
+            setTimeout(function(){
+                $('#catSpeech12').css('visibility', 'visible');
+            }, 5000);
+            setTimeout(function(){
+                $('#catSpeech12').css('visibility', 'hidden');
+            }, 5000);*/
+
             break;
     }
 }
@@ -492,6 +634,12 @@ $('#hand_net').on('click', function(){
     $('embed').remove();
     $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
     $('#inventory_hand_net').css('visibility', 'visible');
+});
+$('#sticks').on('click', function(){
+    $('#sticks').css('visibility', 'hidden');
+    $('embed').remove();
+    $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
+    $('#inventory_sticks').css('visibility', 'visible');
 });
 
 $('#speech_bubble').on('click', function(){
@@ -703,10 +851,6 @@ $('#butterfly').on('click', function(){
         showMap('cave');
         hideMap('forest');
     }, 2000);
-    setTimeout(function(){
-        $('#catSpeech1').css('visibility', 'visible');
-    }, 6000);
-
 });
 
 

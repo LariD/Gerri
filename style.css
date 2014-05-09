@@ -262,9 +262,47 @@ audio{
     left: 600px;
 }
 
-#catSpeech1{
+#catSpeech1, #catSpeech2, #catSpeech3, #catSpeech4, #catSpeech5, #catSpeech6, #catSpeech7, #catSpeech8, #catSpeech9, #catSpeech10, #catSpeech11, #catSpeech12
+{
     position: absolute;
     visibility: hidden;
     left: 243px;
     top: 147px;
+}
+
+#playerSpeech1, #playerSpeech2, #playerSpeech3, #playerSpeech4, #playerSpeech5, #playerSpeech6
+{
+    position: absolute;
+    visibility: hidden;
+    top: 152px;
+    left: 2px;
+
+}
+
+#spirit{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 100px;
+}
+
+#turtle{
+    visibility: hidden;
+    position: absolute;
+    top: 400px;
+    left: 107px;
+}
+
+#turtleSpeech1, #turtleSpeech2, #turtleSpeech3{
+    visibility: hidden;
+    position: absolute;
+    top: 224px;
+    left: 68px;
+}
+
+#sticks{
+    visibility: hidden;
+    position: absolute;
+    top: 268px;
+    left: 499px;
 }
