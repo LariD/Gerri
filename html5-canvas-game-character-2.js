@@ -40,12 +40,17 @@ var jumping = false;
 var currentMap;
 var mapWidth = 800;
 var gerriWidth = 130;
+var gerriElevation = 0;
+var gerriDefaultTop = 0;
 var pihaFencePosition = 100;
 var pihaFenceWidth = 160;
 var pihaFenceHeight = 100;
-var forestStonePos = 200;
-var forestStoneWidth = 200;
-var forestStoneHeight = 50;
+var forestStonePos = 100;
+var forestStoneWidth = 150;
+var forestStoneHeight = 40;
+var forestHousePos = forestStonePos + forestStoneWidth;
+var forestHouseWidth = 300;
+var forestHouseHeight = 140;
 var inventoryHasRope = false;
 var inventoryHasNet = false;
 
@@ -79,6 +84,7 @@ function prepareCanvas(canvasDiv, canvasWidth, canvasHeight) {
 	loadImage("leftArm-jump");
 	loadImage("legs-jump");
 	loadImage("rightArm-jump");
+    gerriDefaultTop = parseInt($("#canvas").css("top"));
     showMap('library_first');
 }
 
@@ -185,35 +191,46 @@ function jump() {
         getRope();
         getNet();
         getBook();
-        var oldTop = parseInt($("#canvas").css("top"));
-        $("#canvas").css("top", oldTop - jumpHeight);
+        $("#canvas").css("top", (gerriDefaultTop - gerriElevation) - jumpHeight);
 	    setTimeout(land, 500);
     }
 
 }
 function land() {
     jumping = false;
-    var oldTop = parseInt($("#canvas").css("top"));
-    $("#canvas").css("top", oldTop + jumpHeight);
+    $("#canvas").css("top", gerriDefaultTop - gerriElevation);
 
 }
 
 
 var keys = [];
-
-$("html").keydown(function(event){
-    if (keys.length > 2) return;
-    keys.push (event.which);
-    moveHero();
-});
-
-
 var movingRight = false;
 var movingLeft = false;
+var rightButtonDown = false;
+var leftButtonDown = false;
 var gerriAnimationRunning = false;
+$("html").keydown(function (event) {
+    if (keys.length > 2) {
+        return;
+    }
+    keys.push (event.which);
+    if (event.which == "37") {
+        leftButtonDown = true;
+    } else if (event.which == "39") {
+        rightButtonDown = true;
+    }
+    moveHero();
+});
+$('html').keyup(function (event) {
+    if (event.which == "37") {
+        leftButtonDown = false;
+    } else if (event.which == "39") {
+        rightButtonDown = false;
+    }
+});
 function moveHero () {
     var moveTo = keys[0],
-        distance = 160;
+        distance = 100;
     keys = keys.slice(1);
     if (gerriAnimationRunning) {
         return;
@@ -224,6 +241,11 @@ function moveHero () {
         moveRight(distance);
     } else if (moveTo == "38") {
         jump();
+        if (rightButtonDown && !movingRight) {
+            moveRight(distance);
+        } else if (leftButtonDown && !movingLeft) {
+            moveLeft(distance);
+        }
     } else if (moveTo == "40") {
         // Down
     }
@@ -238,6 +260,8 @@ function moveLeft(distance) {
             // piha map
             if (currentMap === 'piha') {
                 distance = mapPihaMove(canvas_left, distance, "left");
+            } else if (currentMap === 'forest') {
+                distance = mapForestMove(canvas_left, distance, "left");
             }
             // Check if moving wasn't cancelled
             if (distance > 0) {
@@ -247,9 +271,17 @@ function moveLeft(distance) {
                 $('#canvas').stop(true).animate(
                     { left:  "-=" + distance + "px" },
                     { easing: "linear",
-                        complete: function() { movingLeft = false; }
+                        complete: function() {
+                            dropElevation();
+                            movingLeft = false;
+                            if (leftButtonDown) {
+                                moveLeft(distance);
+                            }
+                        }
                     }
                 );
+            } else {
+                movingLeft = false;
             }
         }
     }
@@ -265,6 +297,8 @@ function moveRight(distance) {
             // piha map
             if (currentMap === 'piha') {
                 distance = mapPihaMove(canvas_left, distance, "right");
+            } else if (currentMap === 'forest') {
+                distance = mapForestMove(canvas_left, distance, "right");
             }
             // Check if moving wasn't cancelled
             if (distance > 0) {
@@ -275,9 +309,47 @@ function moveRight(distance) {
                 $('#canvas').stop(true).animate(
                     { left:  "+=" + distance + "px" },
                     { easing: "linear",
-                        complete: function() { movingRight = false; }
+                        complete: function() {
+                            dropElevation();
+                            movingRight = false;
+                            if (rightButtonDown) {
+                                moveRight(distance);
+                            }
+                        }
                     }
                 );
+            } else {
+                movingRight = false;
+            }
+        }
+    }
+}
+
+function dropElevation() {
+    var player_pos;
+    if (currentMap === 'forest') {
+        player_pos = parseInt($('#canvas').css('left'));
+        if (player_pos < forestStonePos) {
+            // Left of the stone
+            gerriElevation = 0;
+            if (!jumping) {
+                land();
+            }
+        } else if (player_pos < forestHousePos) {
+            // Above the stone, right quarter of the stone
+            if (gerriElevation > forestStoneHeight + 1) {
+                gerriElevation = forestStoneHeight + 1;
+                if (!jumping) {
+                    land();
+                }
+            }
+        } else if (player_pos < (forestHousePos + forestHouseWidth)) {
+            // Above the house
+        } else {
+            // Right of the house
+            gerriElevation = 0;
+            if (!jumping) {
+                land();
             }
         }
     }
@@ -312,6 +384,84 @@ function mapPihaMove(player_pos, distance, direction) {
         }
     } else {
         alert("mapPihaMove wrong direction " + direction);
+    }
+    return distance;
+}
+
+function mapForestMove(player_pos, distance, direction) {
+    if (direction == "right") {
+        if (player_pos < forestStonePos) {
+            // Gerri left of stone
+            if (jumping === false) {
+                // Since Gerri is not jumping, don't allow it to move through the stone
+                if (distance > forestStonePos - player_pos) {
+                    distance = forestStonePos - player_pos;
+                }
+            } else {
+                // Since Gerri is jumpin and is going to reach the stone, set the elevation
+                if (distance > forestStonePos - player_pos) {
+                    gerriElevation = forestStoneHeight + 1;
+                }
+            }
+        } else if (player_pos == forestStonePos) {
+            // Gerri on top of the stone
+            if (jumping) {
+                // OK
+                if (distance > 0) {
+                    gerriElevation = forestStoneHeight + 1;
+                }
+            } else if (gerriElevation > forestStoneHeight) {
+                // OK
+            } else {
+                // Lower than the stone - don't allow moving
+                distance = 0;
+            }
+        } else if (player_pos < forestHousePos) {
+            // Gerri on top of the stone, moving towards house
+            if ((gerriElevation > forestStoneHeight) && jumping) {
+                // OK
+                if (distance > forestHousePos - player_pos) {
+                    // Gerri is jumping off the stone and is going to reach the house, so set elevation
+                    gerriElevation = forestHouseHeight + 1;
+                }
+            } else if (gerriElevation > forestHouseHeight) {
+                // OK
+            } else {
+                // Lower than the house
+                if (distance > forestHousePos - player_pos) {
+                    distance = forestHousePos - player_pos;
+                }
+            }
+        } else if (player_pos == forestHousePos) {
+            // Gerri on top of the house
+            if (jumping) {
+                // OK
+                if (distance > 0) {
+                    gerriElevation = forestHouseHeight + 1;
+                }
+            } else if (gerriElevation > forestHouseHeight) {
+                // OK
+            } else {
+                // Lower than the house - don't allow moving
+                distance = 0;
+            }
+        }
+    } else if (direction == "left") {
+        if (player_pos < forestStonePos) {
+            // Gerri left of stone
+        } else if (player_pos < forestHousePos) {
+            // Gerri on top of the stone
+        } else if (player_pos < (forestHousePos + forestHouseWidth)) {
+            // Gerri on top of the house
+        } else {
+            // Gerri on the right of the house
+            if (distance > (player_pos - (forestHousePos + forestHouseWidth))) {
+                // Don't allow to go back through the house
+                distance = (player_pos - (forestHousePos + forestHouseWidth));
+            }
+        }
+    } else {
+        alert("mapForestMove wrong direction " + direction);
     }
     return distance;
 }
@@ -726,6 +876,11 @@ $('#lawnmower').on('click', function (){
 
 var flowerpotClicked = false;
 $('#flowerpot').on('click', function (){
+    var player_pos = parseInt($('#canvas').css('left'));
+    if (player_pos < (forestHousePos + forestHouseWidth)) {
+        // Only allow to click on the flower pot if player has passed the stone and the house
+        return;
+    }
     if (flowerpotClicked == false) {
         flowerpotClicked = true;
         $('embed').remove();
