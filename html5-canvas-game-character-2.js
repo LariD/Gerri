@@ -100,83 +100,85 @@ function prepareCanvas(canvasDiv, canvasWidth, canvasHeight) {
 }
 
 function loadImage(name) {
-  images[name] = new Image();
-  images[name].onload = function() { 
-	  resourceLoaded();
-  }
-  images[name].src = "images/" + name + ".png";
+    images[name] = new Image();
+    images[name].onload = function () {
+        resourceLoaded();
+    }
+    images[name].src = "images/" + name + ".png";
 }
 
 function resourceLoaded() {
-  numResourcesLoaded += 1;
-  if(numResourcesLoaded === totalResources) {
-	setInterval(redraw, 1000 / fps);
-  }
+    numResourcesLoaded += 1;
+    if (numResourcesLoaded === totalResources) {
+        setInterval(redraw, 1000 / fps);
+    }
 }
 
 function redraw() {
-  var x = charX;
-  var y = charY;
-  canvas.width = canvas.width; // clears the canvas
-  // Draw shadow
-  if (jumping) {
-	drawEllipse(x + 40, y + 29, 100 - breathAmt, 4);
-  } else {
-	drawEllipse(x + 40, y + 29, 160 - breathAmt, 6);
-  }
-  if (jumping) {
-	//y -= jumpHeight;
-  }
-  if (jumping) {
-	context.drawImage(images["leftArm-jump"], x + 40, y - 42 - breathAmt);
-  } else {
-	context.drawImage(images["leftArm"], x + 40, y - 42 - breathAmt);
-  }
-  if (jumping) {
-	context.drawImage(images["legs-jump"], x, y- 6);
-  } else {
-	context.drawImage(images["legs"], x, y);
-  }
-  context.drawImage(images["torso"], x, y - 50);
-  context.drawImage(images["head"], x - 10, y - 125 - breathAmt);
-  context.drawImage(images["hair"], x - 37, y - 138 - breathAmt);
-  if (jumping) {
-	context.drawImage(images["rightArm-jump"], x - 35, y - 42 - breathAmt);
-  } else {
-	context.drawImage(images["rightArm"], x - 15, y - 42 - breathAmt);
-  }
-  drawEllipse(x + 47, y - 68 - breathAmt, 8, curEyeHeight); // Left Eye
-  drawEllipse(x + 58, y - 68 - breathAmt, 8, curEyeHeight); // Right Eye
+    var x = charX;
+    var y = charY;
+    canvas.width = canvas.width; // clears the canvas
+    // Draw shadow
+    if (jumping) {
+        drawEllipse(x + 40, y + 29, 100 - breathAmt, 4);
+    } else {
+        drawEllipse(x + 40, y + 29, 160 - breathAmt, 6);
+    }
+    if (jumping) {
+        //y -= jumpHeight;
+    }
+    if (jumping) {
+        context.drawImage(images["leftArm-jump"], x + 40, y - 42 - breathAmt);
+    } else {
+        context.drawImage(images["leftArm"], x + 40, y - 42 - breathAmt);
+    }
+    if (jumping) {
+        context.drawImage(images["legs-jump"], x, y - 6);
+    } else {
+        context.drawImage(images["legs"], x, y);
+    }
+    context.drawImage(images["torso"], x, y - 50);
+    context.drawImage(images["head"], x - 10, y - 125 - breathAmt);
+    context.drawImage(images["hair"], x - 37, y - 138 - breathAmt);
+    if (jumping) {
+        context.drawImage(images["rightArm-jump"], x - 35, y - 42 - breathAmt);
+    } else {
+        context.drawImage(images["rightArm"], x - 15, y - 42 - breathAmt);
+    }
+    drawEllipse(x + 47, y - 68 - breathAmt, 8, curEyeHeight); // Left Eye
+    drawEllipse(x + 58, y - 68 - breathAmt, 8, curEyeHeight); // Right Eye
 }
 
 function drawEllipse(centerX, centerY, width, height) {
-  context.beginPath();
-  context.moveTo(centerX, centerY - height/2);
-  context.bezierCurveTo(
-	centerX + width/2, centerY - height/2,
-	centerX + width/2, centerY + height/2,
-	centerX, centerY + height/2);
-  context.bezierCurveTo(
-	centerX - width/2, centerY + height/2,
-	centerX - width/2, centerY - height/2,
-	centerX, centerY - height/2);
-  context.fillStyle = "black";
-  context.fill();
-  context.closePath();	
+    context.beginPath();
+    context.moveTo(centerX, centerY - height / 2);
+    context.bezierCurveTo(
+        centerX + width / 2, centerY - height / 2,
+        centerX + width / 2, centerY + height / 2,
+        centerX, centerY + height / 2);
+    context.bezierCurveTo(
+        centerX - width / 2, centerY + height / 2,
+        centerX - width / 2, centerY - height / 2,
+        centerX, centerY - height / 2);
+    context.fillStyle = "black";
+    context.fill();
+    context.closePath();
 }
 
 function updateBreath() {
-  if (breathDir === 1) {  // breath in
-	breathAmt -= breathInc;
-	if (breathAmt < -breathMax) {
-	  breathDir = -1;
-	}
-  } else {  // breath out
-	breathAmt += breathInc;
-	if(breathAmt > breathMax) {
-	  breathDir = 1;
-	}
-  }
+    if (breathDir === 1) {
+        // breath in
+        breathAmt -= breathInc;
+        if (breathAmt < -breathMax) {
+            breathDir = -1;
+        }
+    } else {
+        // breath out
+        breathAmt += breathInc;
+        if (breathAmt > breathMax) {
+            breathDir = 1;
+        }
+    }
 }
 
 
@@ -231,12 +233,11 @@ function jump() {
         $gerri.css("top", (gerriDefaultTop - gerriElevation) - jumpHeight);
 	    setTimeout(land, 500);
     }
-
 }
+
 function land() {
     jumping = false;
     $gerri.css("top", gerriDefaultTop - gerriElevation);
-
 }
 
 
@@ -289,7 +290,7 @@ function moveHero () {
 };
 
 function moveLeft(distance) {
-    if (movingLeft == false) {
+    if (movingLeft === false) {
         movingRight = false;
         movingLeft = true;
         var canvas_left = parseInt($gerri.css('left'));
@@ -304,19 +305,13 @@ function moveLeft(distance) {
                 if (canvas_left < distance) {
                     distance = canvas_left;
                 }
-                $gerri.stop(true).animate(
-                    { left:  "-=" + distance + "px" }, {
-                        easing: "linear",
-                        duration: 100,
-                        complete: function() {
-                            dropElevation();
-                            movingLeft = false;
-                            if (leftButtonDown) {
-                                moveLeft(distance);
-                            }
-                        }
+                $gerri.stop(true).animate({left: "-="+distance+"px"}, {easing: "linear", duration: 100, complete: function() {
+                    dropElevation();
+                    movingLeft = false;
+                    if (leftButtonDown) {
+                        moveLeft(distance);
                     }
-                );
+                }});
             } else {
                 movingLeft = false;
             }
@@ -325,7 +320,7 @@ function moveLeft(distance) {
 }
 
 function moveRight(distance) {
-    if (movingRight == false) {
+    if (movingRight === false) {
         movingLeft = false;
         movingRight = true;
         var canvas_left = parseInt($gerri.css('left'));
@@ -342,18 +337,13 @@ function moveRight(distance) {
                     // change the distance so that gerri doesn't go out of the screen
                     distance = (mapWidth - gerriWidth) - canvas_left;
                 }
-                $gerri.stop(true).animate({ left:  "+=" + distance + "px" }, {
-                        easing: "linear",
-                        duration: 100,
-                        complete: function() {
-                            dropElevation();
-                            movingRight = false;
-                            if (rightButtonDown) {
-                                moveRight(distance);
-                            }
-                        }
+                $gerri.stop(true).animate({ left:  "+=" + distance + "px" }, {easing: "linear", duration: 100, complete: function() {
+                    dropElevation();
+                    movingRight = false;
+                    if (rightButtonDown) {
+                        moveRight(distance);
                     }
-                );
+                }});
             } else {
                 movingRight = false;
             }
@@ -392,7 +382,7 @@ function dropElevation() {
 }
 
 function mapPihaMove(player_pos, distance, direction) {
-    if (direction == "right") {
+    if (direction === "right") {
         // fence detection
         if (player_pos < pihaFencePosition) {
             if (distance > (pihaFencePosition - player_pos)) {
@@ -407,7 +397,7 @@ function mapPihaMove(player_pos, distance, direction) {
                 jumpOverTheFence();
             }
         }
-    } else if (direction == "left") {
+    } else if (direction === "left") {
         // fence detection
         if (player_pos <= pihaFencePosition) {
             // On the left side of the fence - allow normal movement
@@ -427,7 +417,7 @@ function mapPihaMove(player_pos, distance, direction) {
 }
 
 function mapForestMove(player_pos, distance, direction) {
-    if (direction == "right") {
+    if (direction === "right") {
         if (player_pos < forestStonePos) {
             // Gerri left of stone
             if (jumping === false) {
@@ -441,7 +431,7 @@ function mapForestMove(player_pos, distance, direction) {
                     gerriElevation = forestStoneHeight + 1;
                 }
             }
-        } else if (player_pos == forestStonePos) {
+        } else if (player_pos === forestStonePos) {
             // Gerri on top of the stone
             if (jumping) {
                 // OK
@@ -470,7 +460,7 @@ function mapForestMove(player_pos, distance, direction) {
                     distance = forestHousePos - player_pos;
                 }
             }
-        } else if (player_pos == forestHousePos) {
+        } else if (player_pos === forestHousePos) {
             // Gerri on top of the house
             if (jumping) {
                 // OK
@@ -484,7 +474,7 @@ function mapForestMove(player_pos, distance, direction) {
                 distance = 0;
             }
         }
-    } else if (direction == "left") {
+    } else if (direction === "left") {
         if (player_pos < forestStonePos) {
             // Gerri left of stone
         } else if (player_pos < forestHousePos) {
@@ -518,40 +508,37 @@ function jumpOverTheFence() {
 }
 
 function getBook() {
-    var canvas_left = parseInt($gerri.css('left'));
-    if (canvas_left > 480) {
-        if (currentMap === 'secret_room') {
-            if(jumping == true){
-                $('#animal').css('visibility', 'hidden');
-                setTimeout(function () {
-                    $('embed').remove();
-                    $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
-                    showMap('piha');
-                    hideMap('secret_room');
-                }, 1500);
-            }
+    var canvas_left;
+    if (currentMap === 'secret_room') {
+        canvas_left = parseInt($gerri.css('left'));
+        if (canvas_left > 480) {
+            $('#animal').css('visibility', 'hidden');
+            setTimeout(function () {
+                $('embed').remove();
+                $('body').append('<embed src="music/GerriClick.wav" autostart="true" hidden="true" loop="false">');
+                showMap('piha');
+                hideMap('secret_room');
+            }, 1500);
         }
     }
 }
 
 function getRope() {
+    var canvas_left;
     if (currentMap === 'piha' && inventoryHasRope === false) {
-        var canvas_left = parseInt($gerri.css('left'));
+        canvas_left = parseInt($gerri.css('left'));
         if (canvas_left < 50) {
-            if (jumping === true) {
-                pickRope();
-            }
+            pickRope();
         }
     }
 }
 
 function getNet() {
+    var canvas_left;
     if (currentMap === 'piha' && inventoryHasNet === false) {
-        var canvas_left = parseInt($gerri.css('left'));
+        canvas_left = parseInt($gerri.css('left'));
         if (canvas_left > 300 && canvas_left < 450) {
-            if(jumping === true) {
-                pickNet();
-            }
+            pickNet();
         }
     }
 }
@@ -622,14 +609,12 @@ function showMap(mapName) {
             $gerri.css('left','0px');
             break;
         case 'cave':
-            $('#cat').css('visibility', 'visible');
-            $('#tail').css('visibility', 'visible');
             $('#bush').css('visibility', 'visible');
             $('#sticks').css('visibility', 'visible');
             $("#sticks").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
             // Position player
             $gerri.css('left','0px');
-            showCatTail();
+            showCat();
             setTimeout(function(){
                 $('#catSpeech1').css('visibility', 'visible');
             }, 2000);
@@ -802,9 +787,8 @@ function hideMap(mapName) {
             $('#speech_bubble4').css('visibility', 'hidden');
             break;
         case 'cave':
-            $('#cat').css('visibility', 'hidden');
             $('#bush').css('visibility', 'hidden');
-            hideCatTail();
+            hideCat();
             break;
     }
 }
@@ -1036,33 +1020,36 @@ $('#butterfly').on('click', function() {
 });
 
 
-var catTailVisible = false;
-function hideCatTail() {
-    catTailVisible = false;
+var catVisible = false;
+function hideCat() {
+    catVisible = false;
+    $('#cat').css('visibility', 'hidden');
     $('#tail').css('visibility', 'hidden');
     $('#tail2').css('visibility', 'hidden');
     $('#tail3').css('visibility', 'hidden');
 }
-function showCatTail() {
-    catTailVisible = true;
+function showCat() {
+    catVisible = true;
+    $('#cat').css('visibility', 'visible');
+    $('#tail').css('visibility', 'visible');
     flapTail();
 }
 function flapTail() {
-    if (catTailVisible === false) {return;}
+    if (catVisible === false) {return;}
     setTimeout(function () {
-        if (catTailVisible === false) {return;}
+        if (catVisible === false) {return;}
         $('#tail2').css('visibility', 'visible');
         $('#tail').css('visibility', 'hidden');
         setTimeout(function () {
-            if (catTailVisible === false) {return;}
+            if (catVisible === false) {return;}
             $('#tail3').css('visibility', 'visible');
             $('#tail2').css('visibility', 'hidden');
             setTimeout(function () {
-                if (catTailVisible === false) {return;}
+                if (catVisible === false) {return;}
                 $('#tail2').css('visibility', 'visible');
                 $('#tail3').css('visibility', 'hidden');
                 setTimeout(function() {
-                    if (catTailVisible === false) {return;}
+                    if (catVisible === false) {return;}
                     $('#tail').css('visibility', 'visible');
                     $('#tail2').css('visibility', 'hidden');
                     flapTail();
@@ -1072,15 +1059,9 @@ function flapTail() {
     }, 500);
 }
 
-
-
-
-
 function updateAnimalSource(){
-    /*var audio = document.getElementById('audio');
+    var audio = document.getElementById('audio');
     audio.src='music/humor.mp3';
-
-    //audio.src='music/animal.mp3';
     audio.autoplay=true;
-    audio.load();*/
+    audio.load();
 }
