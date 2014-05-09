@@ -237,21 +237,10 @@ function moveLeft(distance) {
         if (canvas_left > 0) {
             // piha map
             if (currentMap === 'piha') {
-                // fence detection
-                if (canvas_left <= pihaFencePosition) {
-                    // On the left side of the fence - allow normal movement
-                } else if (canvas_left <= (pihaFencePosition + pihaFenceWidth)) {
-                    // fence reached - disable moving further left
-                    movingLeft = false;
-                } else if (canvas_left > (pihaFencePosition + pihaFenceWidth)) {
-                    // make sure Gerri doesn't work over the fence
-                    if ((canvas_left - distance) < (pihaFencePosition + pihaFenceWidth)) {
-                        distance = canvas_left - (pihaFencePosition + pihaFenceWidth);
-                    }
-                }
+                distance = mapPihaMove(canvas_left, distance, "left");
             }
-            // Check if movingLeft wasn't cancelled
-            if (movingLeft) {
+            // Check if moving wasn't cancelled
+            if (distance > 0) {
                 if (canvas_left < distance) {
                     distance = canvas_left;
                 }
@@ -275,21 +264,10 @@ function moveRight(distance) {
         if (canvas_left < (mapWidth - gerriWidth)) {
             // piha map
             if (currentMap === 'piha') {
-                // fence detection
-                if (canvas_left < pihaFencePosition) {
-                    // set distance to how much there is left until fence
-                    // so that animation wouldn't take Gerri through the fence
-                    distance = pihaFencePosition - canvas_left;
-                } else if (canvas_left < (pihaFencePosition + pihaFenceWidth)) {
-                    movingRight = false;
-                    if (inventoryHasRope) {
-                        // Gerri has rope, start climbing over animation
-                        jumpOverTheFence();
-                    }
-                }
+                distance = mapPihaMove(canvas_left, distance, "right");
             }
-            // Check if movingRight wasn't cancelled
-            if (movingRight) {
+            // Check if moving wasn't cancelled
+            if (distance > 0) {
                 if ((canvas_left + distance > (mapWidth - gerriWidth))) {
                     // change the distance so that gerri doesn't go out of the screen
                     distance = (mapWidth - gerriWidth) - canvas_left;
@@ -303,6 +281,39 @@ function moveRight(distance) {
             }
         }
     }
+}
+
+function mapPihaMove(player_pos, distance, direction) {
+    if (direction == "right") {
+        // fence detection
+        if (player_pos < pihaFencePosition) {
+            // set distance to how much there is left until fence
+            // so that animation wouldn't take Gerri through the fence
+            distance = pihaFencePosition - player_pos;
+        } else if (player_pos < (pihaFencePosition + pihaFenceWidth)) {
+            distance = 0;
+            if (inventoryHasRope) {
+                // Gerri has rope, start climbing over animation
+                jumpOverTheFence();
+            }
+        }
+    } else if (direction == "left") {
+        // fence detection
+        if (player_pos <= pihaFencePosition) {
+            // On the left side of the fence - allow normal movement
+        } else if (player_pos <= (pihaFencePosition + pihaFenceWidth)) {
+            // fence reached - disable moving further left
+            distance = 0;
+        } else if (player_pos > (pihaFencePosition + pihaFenceWidth)) {
+            // make sure Gerri doesn't work over the fence
+            if ((player_pos - distance) < (pihaFencePosition + pihaFenceWidth)) {
+                distance = player_pos - (pihaFencePosition + pihaFenceWidth);
+            }
+        }
+    } else {
+        alert("mapPihaMove wrong direction " + direction);
+    }
+    return distance;
 }
 
 function jumpOverTheFence() {
