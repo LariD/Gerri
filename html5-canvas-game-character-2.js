@@ -557,13 +557,19 @@ function checkGotRopeAndNet() {
 function showMap(mapName) {
     currentMap = mapName;
     $('#map').css('background-image', 'url(assets/' + mapName + '.png)');
+    // Stop any Gerri animations
+    $('#canvas').stop(true, false);
     switch (mapName) {
         case 'library_first':
             $('#dark').css('visibility', 'visible');
+            // Position player
+            $('#canvas').css('left','0px');
             break;
         case 'secret_room':
             $('#animal').css('visibility', 'visible');
             $('#speech_start').css('visibility', 'visible');
+            // Position player
+            $('#canvas').css('left','0px');
             break;
         case 'piha':
             $('.fence').css('visibility', 'visible');
@@ -590,7 +596,6 @@ function showMap(mapName) {
             $('#bush').css('visibility', 'visible');
             $('#sticks').css('visibility', 'visible');
             $("#sticks").fadeTo(1000, 0.5).fadeTo(1000, 1.0);
-
             // Position player
             $('#canvas').css('left','0px');
             showCatTail();
